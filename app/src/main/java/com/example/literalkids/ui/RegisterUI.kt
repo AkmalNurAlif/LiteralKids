@@ -110,8 +110,8 @@ fun RegisterUI(navController: NavController) {
 
             Button(
                 onClick = {
-                    navController.navigate(Screen.Login.route) {
-                        popUpTo(Screen.Login.route) { inclusive = true }
+                    navController.navigate(Screen.OnBoarding1.route) {
+                        popUpTo(Screen.OnBoarding1.route) { inclusive = true }
                     }
                 },
                 modifier = Modifier
