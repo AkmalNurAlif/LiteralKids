@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.literalkids.navigation.Screen
+import com.example.literalkids.ui.ArticleDetailScreen
 import com.example.literalkids.ui.AvatarSelectionUI
 import com.example.literalkids.ui.BacaCeritaScreenUI
 import com.example.literalkids.ui.ChildProfileUI
@@ -32,6 +33,7 @@ import com.example.literalkids.ui.RegisterUI
 import com.example.literalkids.ui.SearchUI
 import com.example.literalkids.ui.SubscriptionUI
 import com.example.literalkids.ui.HomepageUI
+import com.example.literalkids.ui.ParentActivityScreen
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,7 +50,7 @@ fun MainNavigation() {
 
     NavHost(
         navController = navController,
-        startDestination = Screen.BacaCeritaScreen.route
+        startDestination = Screen.ParentActivityScreen.route
     ) {
 
         // Halaman Login
@@ -135,7 +137,6 @@ fun MainNavigation() {
             LeaderboardUI(navController = navController)
         }
 
-
         composable(Screen.HomeBacaCerita.route) {
             HomeBacaCerita(navController = navController)
         }
@@ -156,6 +157,11 @@ fun MainNavigation() {
         composable(Screen.QuizResult.route) {
             QuizResultScreen(navController = navController)
         }
-
+        composable(Screen.ParentActivityScreen.route) {
+            ParentActivityScreen(navController = navController)
+        }
+        composable(Screen.ArticleDetail.route) {
+            ArticleDetailScreen()
+        }
     }
 }

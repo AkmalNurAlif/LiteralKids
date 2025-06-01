@@ -27,5 +27,6 @@ sealed class Screen(val route: String) {
     object OnBoarding4 : Screen("OnBoarding4")
     object OnBoarding5 : Screen("OnBoarding5")
     object OnBoarding6 : Screen("OnBoarding6")
-
+    object ParentActivityScreen : Screen("parent_activity_screen")
+    object ArticleDetail : Screen("article_detail")
 }
