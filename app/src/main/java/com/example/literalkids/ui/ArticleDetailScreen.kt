@@ -52,7 +52,7 @@ fun ArticleDetailScreen() {
         Spacer(modifier = Modifier.height(24.dp))
 
         // Komentar Section
-        CommentSection()
+//        CommentSection()
     }
 }
 
