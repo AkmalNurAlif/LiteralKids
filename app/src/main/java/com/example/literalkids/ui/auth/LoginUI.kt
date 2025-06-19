@@ -17,9 +17,11 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.compose.ui.platform.LocalContext
 import com.example.literalkids.R
 import com.example.literalkids.navigation.Screen
 import com.example.literalkids.viewmodel.LoginViewModel
+import com.example.literalkids.viewmodel.ViewModelFactory
 
 @Composable
 fun CurvedHeader() {
@@ -53,10 +55,11 @@ fun CurvedHeader() {
 @Composable
 fun LoginUI(
     navController: NavController,
-    viewModel: LoginViewModel = viewModel()
+    viewModel: LoginViewModel = viewModel(factory = ViewModelFactory(LocalContext.current.applicationContext as android.app.Application))
 ) {
     val email by viewModel.email.collectAsState()
     val password by viewModel.password.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
 
     Box(
         modifier = Modifier
@@ -123,6 +126,23 @@ fun LoginUI(
                 Text("Lupa password?", color = Color.Gray, fontSize = 12.sp)
             }
 
+            // Error message
+            uiState.errorMessage?.let { error ->
+                Spacer(modifier = Modifier.height(16.dp))
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(containerColor = Color(0xFFFFEBEE)),
+                    shape = RoundedCornerShape(8.dp)
+                ) {
+                    Text(
+                        text = error,
+                        color = Color(0xFFD32F2F),
+                        fontSize = 14.sp,
+                        modifier = Modifier.padding(12.dp)
+                    )
+                }
+            }
+
             Spacer(modifier = Modifier.height(24.dp))
 
             Button(
@@ -131,13 +151,21 @@ fun LoginUI(
                         navController.navigate(Screen.OnBoarding1.route)
                     }
                 },
+                enabled = !uiState.isLoading,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(50.dp),
                 shape = RoundedCornerShape(25.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF64D2FF))
             ) {
-                Text("Login", color = Color.White, fontSize = 16.sp)
+                if (uiState.isLoading) {
+                    CircularProgressIndicator(
+                        color = Color.White,
+                        modifier = Modifier.size(20.dp)
+                    )
+                } else {
+                    Text("Login", color = Color.White, fontSize = 16.sp)
+                }
             }
 
             Spacer(modifier = Modifier.height(16.dp))

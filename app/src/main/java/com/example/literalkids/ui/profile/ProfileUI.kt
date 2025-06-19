@@ -69,6 +69,7 @@ import com.example.literalkids.navigation.Screen
 import com.example.literalkids.ui.navbar.BottomNavigation
 import com.example.literalkids.viewmodel.ProfileViewModel
 import com.example.literalkids.viewmodel.SubscriptionViewModel
+import com.example.literalkids.viewmodel.ViewModelFactory
 
 @Composable
 fun ProfileUI(
@@ -76,7 +77,9 @@ fun ProfileUI(
 ) {
     val context = LocalContext.current
     val scrollState = rememberScrollState()
-    val profileViewModel: ProfileViewModel = viewModel()
+    val profileViewModel: ProfileViewModel = viewModel(
+        factory = ViewModelFactory(context.applicationContext as android.app.Application)
+    )
     val subscriptionViewModel: SubscriptionViewModel = viewModel()
     val profileUiState by profileViewModel.uiState.collectAsState()
     val subscriptionUiState by subscriptionViewModel.uiState.collectAsState()
@@ -170,6 +173,35 @@ fun ProfileUI(
                     avatarUrl = profileUiState.parentData.avatarUrl,
                     onEditClick = { navController.navigate(Screen.ParentProfile.route) }
                 )
+
+                // Network Status Section
+                if (profileUiState.apiError != null && !profileUiState.isApiLoading) {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(
+                                Color(0xFFFFEBEE),
+                                shape = RoundedCornerShape(8.dp)
+                            )
+                            .padding(12.dp)
+                    ) {
+                        Column {
+                            Text(
+                                text = "Error, aplikasi tidak tersambung dengan wifi",
+                                color = Color(0xFFD32F2F),
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            TextButton(
+                                onClick = { profileViewModel.refreshProfile() }
+                            ) {
+                                Text("Coba Lagi", color = Color(0xFF5DCCF8))
+                            }
+                        }
+                    }
+                }
 
                 Spacer(modifier = Modifier.height(16.dp))
 

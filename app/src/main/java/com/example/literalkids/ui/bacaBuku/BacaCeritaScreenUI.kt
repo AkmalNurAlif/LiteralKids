@@ -35,7 +35,7 @@ fun BacaCeritaScreenUI(
     // Inisialisasi TTS di UI karena butuh Context
     val tts = remember {
         TextToSpeech(context) {}.apply {
-            TextToSpeech.setLanguage = Locale("id", "ID")
+            setLanguage(Locale("id", "ID"))
         }
     }
 
